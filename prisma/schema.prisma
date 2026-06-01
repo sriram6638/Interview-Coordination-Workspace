@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  name      String?
+  password  String
+  role      String     @default("candidate") // candidate, interviewer, admin
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  interviews Interview[]
+  slots      InterviewSlot[]
+
+  @@map("users")
+}
+
+model Interview {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  position    String
+  status      String     @default("scheduled") // scheduled, in-progress, completed, cancelled
+  candidateId String
+  candidate   User       @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  
+  scheduledAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  slots InterviewSlot[]
+
+  @@map("interviews")
+}
+
+model InterviewSlot {
+  id          String   @id @default(cuid())
+  interviewId String
+  interview   Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+  
+  interviewerId String
+  interviewer   User    @relation(fields: [interviewerId], references: [id], onDelete: Cascade)
+  
+  startTime   DateTime
+  endTime     DateTime
+  status      String   @default("available") // available, booked, completed
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("interview_slots")
+}
