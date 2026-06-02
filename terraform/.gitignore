@@ -1,0 +1,62 @@
+# Terraform state files
+# terraform.tfstate
+# terraform.tfstate.*
+# !terraform.tfstate.example
+*.tfstate
+*.tfstate.*
+
+# Terraform lock file
+.terraform.lock.hcl
+
+# Terraform directory
+.terraform/
+.terraform/**
+
+# Terraform variables files (with secrets)
+# .tfvars
+*.tfvars.json
+!terraform.tfvars.example
+
+# Backup files
+*.backup
+*.bak
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude plan files
+*.tfplan
+*.plan
+
+# Local override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Include override files you do wish to add to version control using negated pattern
+# !example_override.tf
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Ignore plan files
+plan.out
+*.out
+
+# Ignore temporary files
+*.tmp
+*.temp
