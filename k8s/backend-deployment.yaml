@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interview-backend
+  labels:
+    app: interview-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: interview-backend
+  template:
+    metadata:
+      labels:
+        app: interview-backend
+    spec:
+      containers:
+        - name: interview-backend
+          image: interview-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: interview-secrets
+                  key: database_url
+            - name: NEXTAUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: interview-secrets
+                  key: nextauth_secret
+            - name: SMTP_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: interview-secrets
+                  key: smtp_host
+            - name: SMTP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: interview-secrets
+                  key: smtp_user
+            - name: SMTP_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: interview-secrets
+                  key: smtp_pass
+            - name: SMTP_FROM
+              valueFrom:
+                secretKeyRef:
+                  name: interview-secrets
+                  key: smtp_from

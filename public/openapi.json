@@ -1,0 +1,23 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Interview Coordination Workspace API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/users": {
+      "get": {
+        "summary": "List interviewers",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/slots": {
+      "get": { "summary": "List slots" },
+      "post": { "summary": "Create slot" },
+      "patch": { "summary": "Update/book slot" }
+    },
+    "/api/health": {
+      "get": { "summary": "Health check" }
+    }
+  }
+}

@@ -3,6 +3,7 @@
 import { FormEvent, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import AppHeader from '@/components/AppHeader';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -21,7 +22,7 @@ export default function RegisterPage() {
     setError('');
 
     try {
-      const response = await fetch('/api/auth/register', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -40,8 +41,10 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 flex items-center justify-center px-4">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100">
+      <AppHeader />
+      <div className="flex items-center justify-center px-4 py-12">
+        <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
         <h1 className="text-3xl font-bold text-indigo-600 mb-6">Sign Up</h1>
 
         {error && (
@@ -116,5 +119,6 @@ export default function RegisterPage() {
         </p>
       </div>
     </div>
+  </div>
   );
 }

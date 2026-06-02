@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import AppHeader from '@/components/AppHeader';
 import { useRouter } from 'next/navigation';
 
 interface DashboardStats {
@@ -24,7 +25,7 @@ export default function DashboardPage() {
           return;
         }
 
-        const response = await fetch('/api/dashboard', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -48,25 +49,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-indigo-600">Interview Coordination</h1>
-          <div className="space-x-4">
-            <Link href="/interviews" className="text-indigo-600 hover:text-indigo-800">
-              Interviews
-            </Link>
-            <button
-              onClick={() => {
-                localStorage.removeItem('token');
-                router.push('/');
-              }}
-              className="text-gray-600 hover:text-gray-900"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </nav>
+      <AppHeader />
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         <h2 className="text-3xl font-bold text-gray-900 mb-8">Welcome to your Dashboard</h2>

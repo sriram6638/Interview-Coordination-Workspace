@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import AppHeader from '@/components/AppHeader';
 import { useRouter } from 'next/navigation';
 
 interface Interview {
@@ -28,7 +29,7 @@ export default function InterviewsPage() {
           return;
         }
 
-        const response = await fetch('/api/interviews', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/interviews`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -65,20 +66,7 @@ export default function InterviewsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-indigo-600">Interview Coordination</h1>
-          <button
-            onClick={() => {
-              localStorage.removeItem('token');
-              router.push('/');
-            }}
-            className="text-gray-600 hover:text-gray-900"
-          >
-            Logout
-          </button>
-        </div>
-      </nav>
+      <AppHeader />
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">

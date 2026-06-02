@@ -5,7 +5,7 @@ A full-stack web application for managing and coordinating interviews efficientl
 ## Tech Stack
 
 - **Frontend**: Next.js 14+ (React 18)
-- **Backend**: Next.js API Routes
+- **Backend**: Express API service in `backend/`
 - **Database**: PostgreSQL
 - **Authentication**: JWT with bcryptjs
 - **Styling**: Tailwind CSS
@@ -155,6 +155,80 @@ gcloud run deploy interview-coordination \
 - `npm run lint` - Run ESLint
 - `npm run db:push` - Sync database schema
 - `npm run db:studio` - Open Prisma Studio
+
+## Run with Docker (local)
+
+This repository includes a `Dockerfile.frontend`, `backend/Dockerfile`, and `docker-compose.yml` to run the frontend, backend, and a local PostgreSQL database as separate containers.
+
+1. Build and start services:
+
+```bash
+# start frontend, backend, and PostgreSQL together
+npm run docker:compose:up
+```
+
+2. Seed and prepare the database (once services are healthy):
+
+```bash
+npm run docker:seed
+```
+
+3. Tail logs / stop services:
+
+```bash
+npm run docker:logs    # follow logs
+npm run docker:compose:down  # stop and remove containers/volumes
+```
+
+Notes:
+- Frontend is exposed on port `3000`, backend on port `4000`, and Postgres on port `5432`.
+- The frontend container uses `NEXT_PUBLIC_API_URL=http://backend:4000` in Compose so client requests route to the backend container.
+- For production builds, build lean images and deploy frontend and backend as separate services.
+
+## Kubernetes Deployment
+
+This repository includes Kubernetes manifests under `k8s/` for local cluster deployment.
+
+1. Build the Docker image locally:
+
+```bash
+docker build -t interview-app .
+```
+
+2. If you are using `kind`, load the image into the cluster:
+
+```bash
+kind load docker-image interview-app:latest
+```
+
+3. Create the Kubernetes secret values:
+
+```bash
+kubectl apply -f k8s/secret-example.yaml
+```
+
+4. Apply Postgres resources:
+
+```bash
+kubectl apply -f k8s/postgres-pvc.yaml
+kubectl apply -f k8s/postgres-deployment.yaml
+kubectl apply -f k8s/postgres-service.yaml
+```
+
+5. Apply app resources:
+
+```bash
+kubectl apply -f k8s/app-deployment.yaml
+kubectl apply -f k8s/app-service.yaml
+```
+
+6. Access the app locally:
+
+```bash
+kubectl port-forward svc/interview-app 3000:3000
+```
+
+The app will then be available at `http://localhost:3000`.
 
 ## Environment Variables
 

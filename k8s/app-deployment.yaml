@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interview-frontend
+  labels:
+    app: interview-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: interview-frontend
+  template:
+    metadata:
+      labels:
+        app: interview-frontend
+    spec:
+      containers:
+        - name: interview-frontend
+          image: interview-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NEXTAUTH_URL
+              value: "http://localhost:3000"
+            - name: NEXT_PUBLIC_API_URL
+              value: "http://interview-backend:4000"

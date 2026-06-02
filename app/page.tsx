@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import AppHeader from '@/components/AppHeader';
 
 export const metadata: Metadata = {
   title: "Interview Coordination Workspace",
@@ -9,19 +10,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-indigo-600">Interview Coordination</h1>
-          <div className="space-x-4">
-            <Link href="/auth/login" className="text-indigo-600 hover:text-indigo-800">
-              Login
-            </Link>
-            <Link href="/auth/register" className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
-              Sign Up
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <AppHeader />
 
       <div className="max-w-6xl mx-auto px-4 py-20">
         <div className="text-center space-y-6">

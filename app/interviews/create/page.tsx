@@ -3,6 +3,7 @@
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import AppHeader from '@/components/AppHeader';
 
 export default function CreateInterviewPage() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function CreateInterviewPage() {
         return;
       }
 
-      const response = await fetch('/api/interviews', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/interviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,20 +51,7 @@ export default function CreateInterviewPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-indigo-600">Interview Coordination</h1>
-          <button
-            onClick={() => {
-              localStorage.removeItem('token');
-              router.push('/');
-            }}
-            className="text-gray-600 hover:text-gray-900"
-          >
-            Logout
-          </button>
-        </div>
-      </nav>
+      <AppHeader />
 
       <div className="max-w-2xl mx-auto px-4 py-8">
         <Link href="/interviews" className="text-indigo-600 hover:underline mb-6 inline-block">
