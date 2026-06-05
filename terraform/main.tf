@@ -60,6 +60,18 @@ resource "google_container_cluster" "primary" {
 
   deletion_protection = false
 
+  # Bootstrap node pool uses HDD (pd-standard) to stay within SSD quota on free tier
+  node_config {
+    preemptible  = false
+    machine_type = var.machine_type
+    disk_size_gb = 12
+    disk_type    = "pd-standard"
+
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+  }
+
   workload_identity_config {
     workload_pool = "${var.project_id}.svc.id.goog"
   }
@@ -83,9 +95,9 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 
   node_config {
-    preemptible  = true # Cheaper for dev/test
+    preemptible  = false # asia-south1 preemptible CPU quota is 0 on free tier
     machine_type = var.machine_type
-    disk_size_gb = 10  # Minimal disk for free trial
+    disk_size_gb = 12  # Minimum for GKE COS image (12 GB)
     disk_type    = "pd-standard"  # HDD instead of SSD for free tier
 
     oauth_scopes = [
